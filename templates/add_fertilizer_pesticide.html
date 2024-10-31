@@ -1,10 +1,10 @@
-<!-- templates/add_fertilizer_pesticide.html -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Fertilizer or Pesticide</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <h1>Add Fertilizer/Pesticide</h1>
@@ -25,6 +25,14 @@
         <p>
             {{ form.cost.label }}<br>
             {{ form.cost(size=32) }}
+        </p>
+        <p>
+            <label for="crop_ids">Select Crops:</label><br>
+            <select name="crop_ids" id="crop_ids" multiple>
+                {% for crop in crops %}
+                    <option value="{{ crop.CropId }}">{{ crop.CropName }}</option>
+                {% endfor %}
+            </select>
         </p>
         <p>{{ form.submit() }}</p>
     </form>

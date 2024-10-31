@@ -4,44 +4,103 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body>
-    <h2>Dashboard</h2>
-    <nav>
-        <a href="{{ url_for('add_crop') }}">Add Crop</a>
-        <a href="{{ url_for('sales') }}">Record Sales</a>
-        <a href="{{ url_for('add_fertilizer_pesticide') }}">Add Fertilizer/Pesticide</a>
-        <a href="{{ url_for('logout') }}">Logout</a>
-    </nav>
-    
-    <h3>Your Crops</h3>
-    <ul>
-        {% for crop in crops %}
-            <li>CropID: {{ crop.CropId }} - CropName: {{ crop.CropName }} - Estimated Yield: {{ crop.EstimatedYield }} tons - Status: {{ crop.Status }}</li>
-        {% else %}
-            <li>No crops added yet.</li>
-        {% endfor %}
-    </ul>
+<body class="bg-gray-100">
+    <div class="container mx-auto mt-5">
+        <h2 class="text-2xl font-bold mb-4">Dashboard</h2>
+        
+        
 
-    <h3>Your Sales</h3>
-    <ul>
-        {% for sale in sales %}
-            <li>Crop ID: {{ sale.CropId }} - Date of Sale: {{ sale.DateOfSale }} - Price per Unit: {{ sale.PricePerUnit }} - Quantity Sold: {{ sale.QuantitySold }} tons - Total Earnings: {{ sale.Earnings }}</li>
-        {% else %}
-            <li>No sales recorded yet.</li>
-        {% endfor %}
-    </ul>
+        <nav class="mb-4">
+            <a href="{{ url_for('add_crop') }}" class="bg-blue-500 text-white px-4 py-2 rounded mr-2">Add Crop</a>
+            <a href="{{ url_for('sales') }}" class="bg-green-500 text-white px-4 py-2 rounded mr-2">Record Sales</a>
+            <a href="{{ url_for('add_fertilizer_pesticide') }}" class="bg-yellow-500 text-white px-4 py-2 rounded mr-2">Add Fertilizer/Pesticide</a>
+            <a href="{{ url_for('logout') }}" class="bg-red-500 text-white px-4 py-2 rounded">Logout</a>
+        </nav>
+        
+        <h3 class="text-xl font-semibold mb-2">Your Crops</h3>
+        <table class="min-w-full bg-white border border-gray-300 rounded-lg mb-4">
+            <thead>
+                <tr class="bg-gray-200">
+                    <th class="border px-4 py-2">Crop ID</th>
+                    <th class="border px-4 py-2">Crop Name</th>
+                    <th class="border px-4 py-2">Estimated Yield (tons)</th>
+                    <th class="border px-4 py-2">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for crop in crops %}
+                    <tr class="hover:bg-gray-100">
+                        <td class="border px-4 py-2">{{ crop.CropId }}</td>
+                        <td class="border px-4 py-2">{{ crop.CropName }}</td>
+                        <td class="border px-4 py-2">{{ crop.EstimatedYield }}</td>
+                        <td class="border px-4 py-2">{{ crop.Status }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4" class="text-center py-2">No crops added yet.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <h3 class="text-xl font-semibold mb-2">Your Sales</h3>
+        <table class="min-w-full bg-white border border-gray-300 rounded-lg mb-4">
+            <thead>
+                <tr class="bg-gray-200">
+                    <th class="border px-4 py-2">Crop ID</th>
+                    <th class="border px-4 py-2">Date of Sale</th>
+                    <th class="border px-4 py-2">Price per Unit</th>
+                    <th class="border px-4 py-2">Quantity Sold (tons)</th>
+                    <th class="border px-4 py-2">Total Earnings</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sale in sales %}
+                    <tr class="hover:bg-gray-100">
+                        <td class="border px-4 py-2">{{ sale.CropId }}</td>
+                        <td class="border px-4 py-2">{{ sale.DateOfSale }}</td>
+                        <td class="border px-4 py-2">{{ sale.PricePerUnit }}</td>
+                        <td class="border px-4 py-2">{{ sale.QuantitySold }}</td>
+                        <td class="border px-4 py-2">{{ sale.Earnings }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center py-2">No sales recorded yet.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
 
-    <h3>Fertilizers & Pesticides Used</h3>
-    <ul>
-        {% for fertilizer, manage_crop in fertilizers %}
-            <li>
-                Crop ID: {{ manage_crop.CropId }} - Product Name: {{ fertilizer.ProductName }} - Type: {{ fertilizer.Type }} - Quantity Used: {{ fertilizer.QuantityUsed }} - Cost: {{ fertilizer.Cost }}
-            </li>
-        {% else %}
-            <li>No fertilizers or pesticides recorded yet.</li>
-        {% endfor %}
-    </ul>
+        <h3 class="text-xl font-semibold mb-2">Fertilizers & Pesticides Used</h3>
+        <table class="min-w-full bg-white border border-gray-300 rounded-lg">
+            <thead>
+                <tr class="bg-gray-200">
+                    <th class="border px-4 py-2">Crop ID</th>
+                    <th class="border px-4 py-2">Product Name</th>
+                    <th class="border px-4 py-2">Type</th>
+                    <th class="border px-4 py-2">Quantity Used</th>
+                    <th class="border px-4 py-2">Cost</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for fertilizer, manage_crop in fertilizers %}
+                    <tr class="hover:bg-gray-100">
+                        <td class="border px-4 py-2">{{ manage_crop.CropId }}</td>
+                        <td class="border px-4 py-2">{{ fertilizer.ProductName }}</td>
+                        <td class="border px-4 py-2">{{ fertilizer.Type }}</td>
+                        <td class="border px-4 py-2">{{ fertilizer.QuantityUsed }}</td>
+                        <td class="border px-4 py-2">{{ fertilizer.Cost }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center py-2">No fertilizers or pesticides recorded yet.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>
