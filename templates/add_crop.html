@@ -1,0 +1,22 @@
+<!-- templates/add_crop.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Add Crop</title>
+</head>
+<body>
+    <h1>Add Crop</h1>
+    <form method="POST" action="{{ url_for('add_crop') }}">
+        {{ form.hidden_tag() }}
+        {{ form.crop_name.label }} {{ form.crop_name() }}<br>
+        {{ form.planting_date.label }} {{ form.planting_date() }}<br>
+        {{ form.harvest_date.label }} {{ form.harvest_date() }}<br>
+        {{ form.estimated_yield.label }} {{ form.estimated_yield() }}<br>
+        {{ form.status.label }} {{ form.status() }}<br>
+        {{ form.submit() }}
+    </form>
+</body>
+</html>

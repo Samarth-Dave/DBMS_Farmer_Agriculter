@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Record Sale</title>
+</head>
+<body>
+    <h1>Record Sale</h1>
+    <form method="POST" action="{{ url_for('sales') }}">
+        {{ form.hidden_tag() }}
+        {{ form.date_of_sale.label }} {{ form.date_of_sale() }}<br>
+        {{ form.price_per_unit.label }} {{ form.price_per_unit() }}<br>
+        {{ form.quantity_sold.label }} {{ form.quantity_sold() }}<br>
+        
+        {{ form.crop_id.label }} {{ form.crop_id() }}<br>
+        {{ form.submit() }}
+    </form>
+</body>
+</html>

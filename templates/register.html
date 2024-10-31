@@ -1,0 +1,22 @@
+<!-- templates/register.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Register</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h2>Register</h2>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        {{ form.first_name.label }} {{ form.first_name() }}<br>
+        {{ form.middle_name.label }} {{ form.middle_name() }}<br>
+        {{ form.last_name.label }} {{ form.last_name() }}<br>
+        {{ form.phone_number.label }} {{ form.phone_number() }}<br>
+        {{ form.location.label }} {{ form.location() }}<br>
+        {{ form.land_area.label }} {{ form.land_area() }}<br>
+        {{ form.password.label }} {{ form.password() }}<br>
+        {{ form.submit() }}
+    </form>
+</body>
+</html>

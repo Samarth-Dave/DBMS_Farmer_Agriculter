@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h2>Dashboard</h2>
+    <nav>
+        <a href="{{ url_for('add_crop') }}">Add Crop</a>
+        <a href="{{ url_for('sales') }}">Record Sales</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </nav>
+    
+    <h3>Your Crops</h3>
+    <ul>
+        {% for crop in crops %}
+            <li>CropID: {{ crop.CropId }} - CropName: {{ crop.CropName }} - Estimated Yield: {{ crop.EstimatedYield }} tons - Status:{{crop.Status}}</li>
+        {% else %}
+            <li>No crops added yet.</li>
+        {% endfor %}
+    </ul>
+
+    <h3>Your Sales</h3>
+    <ul>
+        {% for sale in sales %}
+            <li>Crop ID: {{ sale.CropId }} - Date of Sale: {{ sale.DateOfSale }} - Price per Unit: {{ sale.PricePerUnit }} - Quantity Sold: {{ sale.QuantitySold }} tons - Total Earnings: {{ sale.Earnings }}</li>
+        {% else %}
+            <li>No sales recorded yet.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
