@@ -18,7 +18,17 @@ def create_tables():
 def register():
     form = RegisterForm()
     if form.validate_on_submit():
-        plain_password = form.password.data
+        # Check if the phone number already exists
+        existing_farmer = FarmerProfile.query.filter_by(PhoneNumber=form.phone_number.data).first()
+        
+        if existing_farmer:
+            flash('Phone number already registered. Please log in instead.', 'warning')
+            return redirect(url_for('register'))  # Redirect back to the registration page
+        
+        # Hash the password before storing
+        hashed_password = generate_password_hash(form.password.data)
+
+        # Create a new FarmerProfile instance with the hashed password
         new_farmer = FarmerProfile(
             FirstName=form.first_name.data,
             MiddleName=form.middle_name.data,
@@ -26,12 +36,15 @@ def register():
             PhoneNumber=form.phone_number.data,
             Location=form.location.data,
             LandArea=form.land_area.data,
-            PasswordHash=plain_password  # Store plaintext password directly
+            PasswordHash=hashed_password  # Store the hashed password
         )
+
+        # Add the new farmer to the session and commit to the database
         db.session.add(new_farmer)
         db.session.commit()
-        flash('Registration successful! You can now log in.')
+        flash('Registration successful! You can now log in.', 'success')
         return redirect(url_for('login'))
+
     return render_template('register.html', form=form)
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -39,12 +52,19 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         farmer = FarmerProfile.query.filter_by(PhoneNumber=form.phone_number.data).first()
-        if farmer and farmer.PasswordHash == form.password.data:
-            session['farmer_id'] = farmer.FarmerId
-            flash('Login successful!')
-            return redirect(url_for('dashboard'))
-        else:
-            flash('Login failed. Please check your credentials.')
+        if farmer is None:
+            flash('Phone number not registered. Please register first.', 'danger')
+            return redirect(url_for('register'))
+
+        if not check_password_hash(farmer.PasswordHash, form.password.data):
+            flash('Incorrect password. Please try again.', 'danger')
+            return redirect(url_for('login'))
+
+        # Store farmer ID in session if login is successful
+        session['farmer_id'] = farmer.FarmerId  # Ensure this is the correct column name
+        flash('Login successful!', 'success')
+        return redirect(url_for('dashboard'))  # This should redirect to the dashboard
+
     return render_template('login.html', form=form)
 
 @app.route('/dashboard')
@@ -52,12 +72,12 @@ def dashboard():
     farmer_id = session.get('farmer_id')
 
     if farmer_id is None:
-        flash("Farmer not logged in. Please log in again.", "error")
+        flash("Please log in to access the dashboard.", "danger")
         return redirect(url_for('login'))
 
+    # Fetch and render necessary data for the dashboard
     crops = db.session.query(CropInfo).join(Grows, CropInfo.CropId == Grows.CropId).filter(Grows.FarmerId == farmer_id).all()
     sales = Sales.query.filter_by(FarmerId=farmer_id).all()
-
     fertilizers = (
         db.session.query(FertilizerPesticide, ManageCrop)
         .join(ManageCrop, FertilizerPesticide.ProductId == ManageCrop.ProductId)
