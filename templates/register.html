@@ -6,6 +6,17 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="container mx-auto my-4">
+            {% for category, message in messages %}
+                <div class="bg-{{ 'red' if category == 'danger' else 'yellow' if category == 'warning' else 'green' }}-100 border-l-4 border-{{ 'red' if category == 'danger' else 'yellow' if category == 'warning' else 'green' }}-500 text-{{ 'red' if category == 'danger' else 'yellow' if category == 'warning' else 'green' }}-700 p-4 mb-4">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
     <h2>Register</h2>
     <form method="POST">
         {{ form.hidden_tag() }}
