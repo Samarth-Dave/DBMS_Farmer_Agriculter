@@ -11,13 +11,14 @@
     <nav>
         <a href="{{ url_for('add_crop') }}">Add Crop</a>
         <a href="{{ url_for('sales') }}">Record Sales</a>
+        <a href="{{ url_for('add_fertilizer_pesticide') }}">Add Fertilizer/Pesticide</a>
         <a href="{{ url_for('logout') }}">Logout</a>
     </nav>
     
     <h3>Your Crops</h3>
     <ul>
         {% for crop in crops %}
-            <li>CropID: {{ crop.CropId }} - CropName: {{ crop.CropName }} - Estimated Yield: {{ crop.EstimatedYield }} tons - Status:{{crop.Status}}</li>
+            <li>CropID: {{ crop.CropId }} - CropName: {{ crop.CropName }} - Estimated Yield: {{ crop.EstimatedYield }} tons - Status: {{ crop.Status }}</li>
         {% else %}
             <li>No crops added yet.</li>
         {% endfor %}
@@ -29,6 +30,17 @@
             <li>Crop ID: {{ sale.CropId }} - Date of Sale: {{ sale.DateOfSale }} - Price per Unit: {{ sale.PricePerUnit }} - Quantity Sold: {{ sale.QuantitySold }} tons - Total Earnings: {{ sale.Earnings }}</li>
         {% else %}
             <li>No sales recorded yet.</li>
+        {% endfor %}
+    </ul>
+
+    <h3>Fertilizers & Pesticides Used</h3>
+    <ul>
+        {% for fertilizer, manage_crop in fertilizers %}
+            <li>
+                Crop ID: {{ manage_crop.CropId }} - Product Name: {{ fertilizer.ProductName }} - Type: {{ fertilizer.Type }} - Quantity Used: {{ fertilizer.QuantityUsed }} - Cost: {{ fertilizer.Cost }}
+            </li>
+        {% else %}
+            <li>No fertilizers or pesticides recorded yet.</li>
         {% endfor %}
     </ul>
 </body>

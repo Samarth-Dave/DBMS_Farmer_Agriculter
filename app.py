@@ -1,10 +1,12 @@
 # app.py
 from flask import Flask, render_template, redirect, url_for, flash, session
 from config import Config
-from forms import RegisterForm, LoginForm,SalesForm,CropForm
-from models import db, FarmerProfile, CropInfo, Grows, Sales
+from forms import RegisterForm, LoginForm,SalesForm,CropForm, FertilizerPesticideForm
+from models import db, FarmerProfile, CropInfo, Grows, Sales, FertilizerPesticide, ManageCrop
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
+from flask import request
+
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -69,11 +71,17 @@ def dashboard():
     # Query sales associated with the logged-in farmer
     sales = Sales.query.filter_by(FarmerId=farmer_id).all()
 
-    # For debugging
-    print("Crops:", crops)
-    print("Sales:", sales)
+    # Query fertilizers and pesticides used
+    fertilizers = (
+        db.session.query(FertilizerPesticide, ManageCrop)
+        .join(ManageCrop, FertilizerPesticide.ProductId == ManageCrop.ProductId)
+        .join(CropInfo, ManageCrop.CropId == CropInfo.CropId)
+        .join(Grows, CropInfo.CropId == Grows.CropId)
+        .filter(Grows.FarmerId == farmer_id)
+        .all()
+    )
 
-    return render_template('dashboard.html', crops=crops, sales=sales)
+    return render_template('dashboard.html', crops=crops, sales=sales, fertilizers=fertilizers)
 
 
 
@@ -152,6 +160,39 @@ def sales():
         return redirect(url_for('dashboard'))
 
     return render_template('sales.html', form=form)
+
+@app.route('/add_fertilizer_pesticide', methods=['GET', 'POST'])
+def add_fertilizer_pesticide():
+    form = FertilizerPesticideForm()
+    if form.validate_on_submit():
+        # Create a new FertilizerPesticide entry
+        new_product = FertilizerPesticide(
+            ProductName=form.product_name.data,
+            Type=form.type.data,
+            QuantityUsed=form.quantity_used.data,
+            Cost=form.cost.data
+        )
+        
+        # Add the new product to the database
+        db.session.add(new_product)
+        db.session.commit()
+
+        # Automatically link product to all crops for the logged-in farmer
+        farmer_id = session.get('farmer_id')
+        crops = db.session.query(CropInfo.CropId).join(Grows).filter(Grows.FarmerId == farmer_id).all()
+        
+        for crop in crops:
+            manage_crop_entry = ManageCrop(CropId=crop.CropId, ProductId=new_product.ProductId)
+            db.session.add(manage_crop_entry)
+        
+        db.session.commit()
+        flash('Fertilizer/Pesticide added and linked to crops successfully!', 'success')
+        
+        return redirect(url_for('dashboard'))
+
+    return render_template('add_fertilizer_pesticide.html', form=form)
+
+
 
 @app.route('/logout')
 def logout():

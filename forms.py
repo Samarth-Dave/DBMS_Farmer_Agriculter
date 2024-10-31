@@ -32,3 +32,10 @@ class SalesForm(FlaskForm):
     earnings = DecimalField('Earnings', validators=[Optional()])
     crop_id = StringField('Crop ID', validators=[Optional()])  # Consider using a dropdown in a real application
     submit = SubmitField('Record Sale')
+
+class FertilizerPesticideForm(FlaskForm):
+    product_name = StringField('Product Name', validators=[DataRequired(), Length(max=50)])
+    type = SelectField('Type', choices=[('Fertilizer', 'Fertilizer'), ('Pesticide', 'Pesticide')], validators=[DataRequired()])
+    quantity_used = DecimalField('Quantity Used', validators=[Optional()])
+    cost = DecimalField('Cost', validators=[Optional()])
+    submit = SubmitField('Add Product')

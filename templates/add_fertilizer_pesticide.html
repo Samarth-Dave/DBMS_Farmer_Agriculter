@@ -1,0 +1,32 @@
+<!-- templates/add_fertilizer_pesticide.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Fertilizer or Pesticide</title>
+</head>
+<body>
+    <h1>Add Fertilizer/Pesticide</h1>
+    <form method="POST" action="{{ url_for('add_fertilizer_pesticide') }}">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.product_name.label }}<br>
+            {{ form.product_name(size=32) }}
+        </p>
+        <p>
+            {{ form.type.label }}<br>
+            {{ form.type() }}
+        </p>
+        <p>
+            {{ form.quantity_used.label }}<br>
+            {{ form.quantity_used(size=32) }}
+        </p>
+        <p>
+            {{ form.cost.label }}<br>
+            {{ form.cost(size=32) }}
+        </p>
+        <p>{{ form.submit() }}</p>
+    </form>
+</body>
+</html>
