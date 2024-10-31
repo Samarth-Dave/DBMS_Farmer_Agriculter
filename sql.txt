@@ -1,0 +1,119 @@
+mysql> show tables
+    -> ;
++-----------------------------+
+| Tables_in_farmeragriculture |
++-----------------------------+
+| cropinfo                    |
+| farmerprofile               |
+| fertilizerpesticide         |
+| grows                       |
+| managecrop                  |
+| sales                       |
++-----------------------------+
+6 rows in set (0.00 sec)
+
+mysql> select * from farmerprofile;
++----------+-----------+------------+----------+-------------+----------+----------+--------------+
+| FarmerId | FirstName | MiddleName | LastName | PhoneNumber | Location | LandArea | PasswordHash |
++----------+-----------+------------+----------+-------------+----------+----------+--------------+
+|        7 | sad       | dp         | da       | 0987654321  | dafr     |    22.00 | 123456       |
+|        8 | atharva   | ds         | deokar   | 1234567890  | asd      |  1000.00 | 123456       |
++----------+-----------+------------+----------+-------------+----------+----------+--------------+
+2 rows in set (0.00 sec)
+
+mysql> select * from farmerprofile;
++----------+-----------+------------+----------+-------------+----------+----------+--------------+
+| FarmerId | FirstName | MiddleName | LastName | PhoneNumber | Location | LandArea | PasswordHash |
++----------+-----------+------------+----------+-------------+----------+----------+--------------+
+|        7 | sad       | dp         | da       | 0987654321  | dafr     |    22.00 | 123456       |
+|        8 | atharva   | ds         | deokar   | 1234567890  | asd      |  1000.00 | 123456       |
+|        9 | saur      | sa         | fadsdf   | 9322675772  | india    |   120.00 | 123456789    |
++----------+-----------+------------+----------+-------------+----------+----------+--------------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT * FROM grows ;
++----------+--------+
+| FarmerId | CropId |
++----------+--------+
+|        7 |      7 |
+|        9 |      8 |
++----------+--------+
+2 rows in set (0.00 sec)
+
+mysql> describe farmerprofile
+    -> ;
++--------------+---------------+------+-----+---------+----------------+
+| Field        | Type          | Null | Key | Default | Extra          |
++--------------+---------------+------+-----+---------+----------------+
+| FarmerId     | int           | NO   | PRI | NULL    | auto_increment |
+| FirstName    | varchar(50)   | YES  |     | NULL    |                |
+| MiddleName   | varchar(50)   | YES  |     | NULL    |                |
+| LastName     | varchar(50)   | YES  |     | NULL    |                |
+| PhoneNumber  | varchar(15)   | YES  |     | NULL    |                |
+| Location     | varchar(100)  | YES  |     | NULL    |                |
+| LandArea     | decimal(10,2) | YES  |     | NULL    |                |
+| PasswordHash | varchar(255)  | YES  |     | NULL    |                |
++--------------+---------------+------+-----+---------+----------------+
+8 rows in set (0.00 sec)
+
+mysql> describe cropinfo
+    -> ;
++----------------+---------------+------+-----+-----------+----------------+
+| Field          | Type          | Null | Key | Default   | Extra          |
++----------------+---------------+------+-----+-----------+----------------+
+| CropId         | int           | NO   | PRI | NULL      | auto_increment |
+| CropName       | varchar(50)   | YES  |     | NULL      |                |
+| PlantingDate   | date          | YES  |     | NULL      |                |
+| HarvestDate    | date          | YES  |     | NULL      |                |
+| EstimatedYield | decimal(10,2) | YES  |     | NULL      |                |
+| Status         | varchar(20)   | YES  |     | available |                |
++----------------+---------------+------+-----+-----------+----------------+
+6 rows in set (0.00 sec)
+
+mysql> describe sales;
++--------------+---------------+------+-----+---------+----------------+
+| Field        | Type          | Null | Key | Default | Extra          |
++--------------+---------------+------+-----+---------+----------------+
+| SaleId       | int           | NO   | PRI | NULL    | auto_increment |
+| DateOfSale   | date          | YES  |     | NULL    |                |
+| PricePerUnit | decimal(10,2) | YES  |     | NULL    |                |
+| QuantitySold | decimal(10,2) | YES  |     | NULL    |                |
+| Earnings     | decimal(10,2) | YES  |     | NULL    |                |
+| CropId       | int           | YES  | MUL | NULL    |                |
+| FarmerId     | int           | YES  | MUL | NULL    |                |
++--------------+---------------+------+-----+---------+----------------+
+7 rows in set (0.00 sec)
+
+mysql> describe grows;
++----------+------+------+-----+---------+-------+
+| Field    | Type | Null | Key | Default | Extra |
++----------+------+------+-----+---------+-------+
+| FarmerId | int  | NO   | PRI | NULL    |       |
+| CropId   | int  | NO   | PRI | NULL    |       |
++----------+------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> describe manageCrop;
++-----------+------+------+-----+---------+-------+
+| Field     | Type | Null | Key | Default | Extra |
++-----------+------+------+-----+---------+-------+
+| CropId    | int  | NO   | PRI | NULL    |       |
+| ProductId | int  | NO   | PRI | NULL    |       |
++-----------+------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> describe  fertilizerpesticide;
++--------------+--------------------------------+------+-----+---------+----------------+
+| Field        | Type                           | Null | Key | Default | Extra          |
++--------------+--------------------------------+------+-----+---------+----------------+
+| ProductId    | int                            | NO   | PRI | NULL    | auto_increment |
+| ProductName  | varchar(50)                    | YES  |     | NULL    |                |
+| Type         | enum('Fertilizer','Pesticide') | YES  |     | NULL    |                |
+| QuantityUsed | decimal(10,2)                  | YES  |     | NULL    |                |
+| Cost         | decimal(10,2)                  | YES  |     | NULL    |                |
++--------------+--------------------------------+------+-----+---------+----------------+
+5 rows in set (0.00 sec)
+
+
+
+convert these into sql file wtiht same parmeters
