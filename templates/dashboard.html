@@ -28,6 +28,7 @@
                     <th class="border px-4 py-2">Crop Name</th>
                     <th class="border px-4 py-2">Estimated Yield (tons)</th>
                     <th class="border px-4 py-2">Status</th>
+                    <th class="border px-4 py-2">Update</th>
                 </tr>
             </thead>
             <tbody>
@@ -37,6 +38,9 @@
                         <td class="border px-4 py-2">{{ crop.CropName }}</td>
                         <td class="border px-4 py-2">{{ crop.EstimatedYield }}</td>
                         <td class="border px-4 py-2">{{ crop.Status }}</td>
+                        <td class="border px-4 py-2">
+                            <a href="{{ url_for('update_crop', crop_id=crop.CropId) }}" class="bg-blue-500 text-white px-2 py-1 rounded">Edit</a>
+                        </td>
                     </tr>
                 {% else %}
                     <tr>
@@ -55,6 +59,7 @@
                     <th class="border px-4 py-2">Price per Unit</th>
                     <th class="border px-4 py-2">Quantity Sold (tons)</th>
                     <th class="border px-4 py-2">Total Earnings</th>
+                    <th class="border px-4 py-2">Update</th>
                 </tr>
             </thead>
             <tbody>
@@ -65,6 +70,9 @@
                         <td class="border px-4 py-2">{{ sale.PricePerUnit }}</td>
                         <td class="border px-4 py-2">{{ sale.QuantitySold }}</td>
                         <td class="border px-4 py-2">{{ sale.Earnings }}</td>
+                        <td class="border px-4 py-2">
+                            <a href="{{ url_for('update_sale', sale_id=sale.SaleId) }}" class="bg-blue-500 text-white px-2 py-1 rounded">Edit</a>
+                        </td>
                     </tr>
                 {% else %}
                     <tr>
@@ -83,6 +91,7 @@
                     <th class="border px-4 py-2">Type</th>
                     <th class="border px-4 py-2">Quantity Used</th>
                     <th class="border px-4 py-2">Cost</th>
+                    <th class="border px-4 py-2">Update</th>
                 </tr>
             </thead>
             <tbody>
@@ -93,6 +102,9 @@
                         <td class="border px-4 py-2">{{ fertilizer.Type }}</td>
                         <td class="border px-4 py-2">{{ fertilizer.QuantityUsed }}</td>
                         <td class="border px-4 py-2">{{ fertilizer.Cost }}</td>
+                        <td class="border px-4 py-2">
+                            <a href="{{ url_for('update_fertilizer', fertilizer_id=fertilizer.ProductId) }}" class="bg-blue-500 text-white px-2 py-1 rounded">Edit</a>
+                        </td>
                     </tr>
                 {% else %}
                     <tr>

@@ -187,6 +187,66 @@ def add_fertilizer_pesticide():
     
     return render_template('add_fertilizer_pesticide.html', form=form, crops=crops)
 
+
+# Example route for updating a Crop record
+@app.route('/update_crop/<int:crop_id>', methods=['GET', 'POST'])
+def update_crop(crop_id):
+    crop = CropInfo.query.get(crop_id)
+    if request.method == 'POST':
+        # Update fields from the form data
+        crop.CropName = request.form['CropName']
+        crop.EstimatedYield = request.form['EstimatedYield']
+        crop.Status = request.form['Status']
+        
+        db.session.commit()
+        return redirect(url_for('dashboard'))
+
+    return render_template('update_crop.html', crop=crop)
+
+# Example route for updating a Sales record
+@app.route('/update_sale/<int:sale_id>', methods=['GET', 'POST'])
+def update_sale(sale_id):
+    sale = Sales.query.get(sale_id)
+    if request.method == 'POST':
+        # Update the sales information
+        sale.PricePerUnit = float(request.form['PricePerUnit'])
+        sale.QuantitySold = float(request.form['QuantitySold'])
+        sale.Earnings = sale.PricePerUnit * sale.QuantitySold
+
+        # Commit the updated sale data
+        db.session.commit()
+
+        # Check total quantity sold for the crop to update its status if needed
+        crop_info = CropInfo.query.get(sale.CropId)  # Get the associated crop
+        total_sold = db.session.query(db.func.sum(Sales.QuantitySold)).filter(Sales.CropId == sale.CropId).scalar() or 0
+
+        # Update the crop status if the total sold quantity meets or exceeds the estimated yield
+        if total_sold >= crop_info.EstimatedYield:
+            crop_info.Status = 'Unavailable'
+            db.session.commit()  # Commit the status change
+
+        flash('Sale updated successfully!', 'success')
+        return redirect(url_for('dashboard'))
+
+    return render_template('update_sale.html', sale=sale)
+
+
+# Example route for updating a Fertilizer/Pesticide record
+@app.route('/update_fertilizer/<int:fertilizer_id>', methods=['GET', 'POST'])
+def update_fertilizer(fertilizer_id):
+    fertilizer = FertilizerPesticide.query.get(fertilizer_id)
+    if request.method == 'POST':
+        fertilizer.ProductName = request.form['ProductName']
+        fertilizer.Type = request.form['Type']
+        fertilizer.QuantityUsed = request.form['QuantityUsed']
+        fertilizer.Cost = request.form['Cost']
+        
+        db.session.commit()
+        return redirect(url_for('dashboard'))
+
+    return render_template('update_fertilizer.html', fertilizer=fertilizer)
+
+
 @app.route('/logout')
 def logout():
     session.clear()

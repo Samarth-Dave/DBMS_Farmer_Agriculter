@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Sale</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto mt-5">
+        <h2 class="text-2xl font-bold mb-4">Update Sale</h2>
+        
+        <form method="POST">
+            <label class="block mb-2">Date of Sale</label>
+            <input type="date" name="DateOfSale" value="{{ sale.DateOfSale }}" class="mb-4 px-4 py-2 border rounded w-full">
+            
+            <label class="block mb-2">Price per Unit</label>
+            <input type="number" step="0.01" name="PricePerUnit" value="{{ sale.PricePerUnit }}" class="mb-4 px-4 py-2 border rounded w-full">
+            
+            <label class="block mb-2">Quantity Sold (tons)</label>
+            <input type="number" step="0.01" name="QuantitySold" value="{{ sale.QuantitySold }}" class="mb-4 px-4 py-2 border rounded w-full">
+
+            <p class="text-gray-700 mb-4">Total Earnings: {{ sale.PricePerUnit * sale.QuantitySold }}</p>
+            
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Update</button>
+        </form>
+    </div>
+</body>
+</html>
