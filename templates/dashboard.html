@@ -10,8 +10,6 @@
 <body class="bg-gray-100">
     <div class="container mx-auto mt-5">
         <h2 class="text-2xl font-bold mb-4">Dashboard</h2>
-        
-        
 
         <nav class="mb-4">
             <a href="{{ url_for('add_crop') }}" class="bg-blue-500 text-white px-4 py-2 rounded mr-2">Add Crop</a>
@@ -19,7 +17,7 @@
             <a href="{{ url_for('add_fertilizer_pesticide') }}" class="bg-yellow-500 text-white px-4 py-2 rounded mr-2">Add Fertilizer/Pesticide</a>
             <a href="{{ url_for('logout') }}" class="bg-red-500 text-white px-4 py-2 rounded">Logout</a>
         </nav>
-        
+
         <h3 class="text-xl font-semibold mb-2">Your Crops</h3>
         <table class="min-w-full bg-white border border-gray-300 rounded-lg mb-4">
             <thead>
@@ -29,6 +27,7 @@
                     <th class="border px-4 py-2">Estimated Yield (tons)</th>
                     <th class="border px-4 py-2">Status</th>
                     <th class="border px-4 py-2">Update</th>
+                    <th class="border px-4 py-2">Delete</th>
                 </tr>
             </thead>
             <tbody>
@@ -41,15 +40,20 @@
                         <td class="border px-4 py-2">
                             <a href="{{ url_for('update_crop', crop_id=crop.CropId) }}" class="bg-blue-500 text-white px-2 py-1 rounded">Edit</a>
                         </td>
+                        <td class="border px-4 py-2">
+                            <form action="{{ url_for('delete_crop', crop_id=crop.CropId) }}" method="POST" style="display:inline;">
+                                <button type="submit" class="bg-red-500 text-white px-2 py-1 rounded">Delete</button>
+                            </form>
+                        </td>
                     </tr>
                 {% else %}
                     <tr>
-                        <td colspan="4" class="text-center py-2">No crops added yet.</td>
+                        <td colspan="6" class="text-center py-2">No crops added yet.</td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
-        
+
         <h3 class="text-xl font-semibold mb-2">Your Sales</h3>
         <table class="min-w-full bg-white border border-gray-300 rounded-lg mb-4">
             <thead>
@@ -60,6 +64,7 @@
                     <th class="border px-4 py-2">Quantity Sold (tons)</th>
                     <th class="border px-4 py-2">Total Earnings</th>
                     <th class="border px-4 py-2">Update</th>
+                    <th class="border px-4 py-2">Delete</th>
                 </tr>
             </thead>
             <tbody>
@@ -73,10 +78,15 @@
                         <td class="border px-4 py-2">
                             <a href="{{ url_for('update_sale', sale_id=sale.SaleId) }}" class="bg-blue-500 text-white px-2 py-1 rounded">Edit</a>
                         </td>
+                        <td class="border px-4 py-2">
+                            <form action="{{ url_for('delete_sale', sale_id=sale.SaleId) }}" method="POST" style="display:inline;">
+                                <button type="submit" class="bg-red-500 text-white px-2 py-1 rounded">Delete</button>
+                            </form>
+                        </td>
                     </tr>
                 {% else %}
                     <tr>
-                        <td colspan="5" class="text-center py-2">No sales recorded yet.</td>
+                        <td colspan="7" class="text-center py-2">No sales recorded yet.</td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -92,6 +102,7 @@
                     <th class="border px-4 py-2">Quantity Used</th>
                     <th class="border px-4 py-2">Cost</th>
                     <th class="border px-4 py-2">Update</th>
+                    <th class="border px-4 py-2">Delete</th>
                 </tr>
             </thead>
             <tbody>
@@ -105,14 +116,29 @@
                         <td class="border px-4 py-2">
                             <a href="{{ url_for('update_fertilizer', fertilizer_id=fertilizer.ProductId) }}" class="bg-blue-500 text-white px-2 py-1 rounded">Edit</a>
                         </td>
+                        <td class="border px-4 py-2">
+                            <form action="{{ url_for('delete_fertilizer', fertilizer_id=fertilizer.ProductId) }}" method="POST" style="display:inline;">
+                                <button type="submit" class="bg-red-500 text-white px-2 py-1 rounded">Delete</button>
+                            </form>
+                        </td>
                     </tr>
                 {% else %}
                     <tr>
-                        <td colspan="5" class="text-center py-2">No fertilizers or pesticides recorded yet.</td>
+                        <td colspan="7" class="text-center py-2">No fertilizers or pesticides recorded yet.</td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <ul class="my-4">
+              {% for category, message in messages %}
+                <li class="text-{{ category }} bg-{{ category }}-100 border border-{{ category }}-300 text-{{ category }}-800 px-4 py-2 rounded">{{ message }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
     </div>
 </body>
 </html>

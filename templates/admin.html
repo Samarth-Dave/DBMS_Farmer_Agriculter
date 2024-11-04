@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container mx-auto my-5">
+        <h1 class="text-2xl font-bold mb-5">Admin Dashboard</h1>
+
+        <h2 class="text-xl font-semibold mb-3">Farmers</h2>
+        <table class="min-w-full border-collapse border border-gray-300">
+            <thead>
+                <tr>
+                    <th class="border border-gray-300 p-2">Farmer ID</th>
+                    <th class="border border-gray-300 p-2">Name</th>
+                    <th class="border border-gray-300 p-2">Phone Number</th>
+                    <th class="border border-gray-300 p-2">Location</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for farmer in farmers %}
+                <tr>
+                    <td class="border border-gray-300 p-2">{{ farmer.FarmerId }}</td>
+                    <td class="border border-gray-300 p-2">{{ farmer.FirstName }} {{ farmer.MiddleName }} {{ farmer.LastName }}</td>
+                    <td class="border border-gray-300 p-2">{{ farmer.PhoneNumber }}</td>
+                    <td class="border border-gray-300 p-2">{{ farmer.Location }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h2 class="text-xl font-semibold mb-3 mt-5">Crops</h2>
+        <table class="min-w-full border-collapse border border-gray-300">
+            <thead>
+                <tr>
+                    <th class="border border-gray-300 p-2">Crop ID</th>
+                    <th class="border border-gray-300 p-2">Crop Name</th>
+                    <th class="border border-gray-300 p-2">Estimated Yield</th>
+                    <th class="border border-gray-300 p-2">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for crop in crops %}
+                <tr>
+                    <td class="border border-gray-300 p-2">{{ crop.CropId }}</td>
+                    <td class="border border-gray-300 p-2">{{ crop.CropName }}</td>
+                    <td class="border border-gray-300 p-2">{{ crop.EstimatedYield }}</td>
+                    <td class="border border-gray-300 p-2">{{ crop.Status }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h2 class="text-xl font-semibold mb-3 mt-5">Sales</h2>
+        <table class="min-w-full border-collapse border border-gray-300">
+            <thead>
+                <tr>
+                    <th class="border border-gray-300 p-2">Sale ID</th>
+                    <th class="border border-gray-300 p-2">Date of Sale</th>
+                    <th class="border border-gray-300 p-2">Crop ID</th>
+                    <th class="border border-gray-300 p-2">Quantity Sold</th>
+                    <th class="border border-gray-300 p-2">Earnings</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sale in sales %}
+                <tr>
+                    <td class="border border-gray-300 p-2">{{ sale.SaleId }}</td>
+                    <td class="border border-gray-300 p-2">{{ sale.DateOfSale }}</td>
+                    <td class="border border-gray-300 p-2">{{ sale.CropId }}</td>
+                    <td class="border border-gray-300 p-2">{{ sale.QuantitySold }}</td>
+                    <td class="border border-gray-300 p-2">{{ sale.Earnings }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h2 class="text-xl font-semibold mb-3 mt-5">Fertilizers and Pesticides</h2>
+        <table class="min-w-full border-collapse border border-gray-300">
+            <thead>
+                <tr>
+                    <th class="border border-gray-300 p-2">Product ID</th>
+                    <th class="border border-gray-300 p-2">Product Name</th>
+                    <th class="border border-gray-300 p-2">Type</th>
+                    <th class="border border-gray-300 p-2">Cost</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for fertilizer in fertilizers %}
+                <tr>
+                    <td class="border border-gray-300 p-2">{{ fertilizer.ProductId }}</td>
+                    <td class="border border-gray-300 p-2">{{ fertilizer.ProductName }}</td>
+                    <td class="border border-gray-300 p-2">{{ fertilizer.Type }}</td>
+                    <td class="border border-gray-300 p-2">{{ fertilizer.Cost }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h2 class="text-xl font-semibold mb-3 mt-5">Grows</h2>
+        <table class="min-w-full border-collapse border border-gray-300">
+            <thead>
+                <tr>
+                    <th class="border border-gray-300 p-2">Farmer ID</th>
+                    <th class="border border-gray-300 p-2">Crop ID</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for grow in grows %}
+                <tr>
+                    <td class="border border-gray-300 p-2">{{ grow.FarmerId }}</td>
+                    <td class="border border-gray-300 p-2">{{ grow.CropId }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h2 class="text-xl font-semibold mb-3 mt-5">Manage Crops</h2>
+        <table class="min-w-full border-collapse border border-gray-300">
+            <thead>
+                <tr>
+                    <th class="border border-gray-300 p-2">Crop ID</th>
+                    <th class="border border-gray-300 p-2">Product ID</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for manage_crop in manage_crops %}
+                <tr>
+                    <td class="border border-gray-300 p-2">{{ manage_crop.CropId }}</td>
+                    <td class="border border-gray-300 p-2">{{ manage_crop.ProductId }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

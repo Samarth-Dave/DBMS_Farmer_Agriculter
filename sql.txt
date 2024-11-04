@@ -3,67 +3,59 @@ CREATE DATABASE IF NOT EXISTS farmeragriculture;
 USE farmeragriculture;
 
 -- Create farmerprofile table
-CREATE TABLE farmerprofile (
-    FarmerId INT NOT NULL AUTO_INCREMENT,
-    FirstName VARCHAR(50),
-    MiddleName VARCHAR(50),
-    LastName VARCHAR(50),
-    PhoneNumber VARCHAR(15),
-    Location VARCHAR(100),
-    LandArea DECIMAL(10,2),
-    PasswordHash VARCHAR(255),
-    PRIMARY KEY (FarmerId)
+CREATE TABLE FarmerProfile (
+    FarmerId INT PRIMARY KEY AUTO_INCREMENT,
+    FirstName VARCHAR(255),
+    MiddleName VARCHAR(255),
+    LastName VARCHAR(255),
+    PhoneNumber VARCHAR(15) UNIQUE,
+    Location VARCHAR(255),
+    LandArea DECIMAL(10, 2),
+    PasswordHash VARCHAR(255)
 );
 
--- Create cropinfo table
-CREATE TABLE cropinfo (
-    CropId INT NOT NULL AUTO_INCREMENT,
-    CropName VARCHAR(50),
+CREATE TABLE CropInfo (
+    CropId INT PRIMARY KEY AUTO_INCREMENT,
+    CropName VARCHAR(255),
     PlantingDate DATE,
     HarvestDate DATE,
-    EstimatedYield DECIMAL(10,2),
-    Status VARCHAR(20) DEFAULT 'available',
-    PRIMARY KEY (CropId)
-);
-CREATE TABLE fertilizerpesticide (
-    ProductId INT NOT NULL AUTO_INCREMENT,
-    ProductName VARCHAR(50),
-    Type ENUM('Fertilizer', 'Pesticide'),
-    QuantityUsed DECIMAL(10,2),
-    Cost DECIMAL(10,2),
-    PRIMARY KEY (ProductId)
+    EstimatedYield DECIMAL(10, 2),
+    Status VARCHAR(50)
 );
 
--- Create sales table
-CREATE TABLE sales (
-    SaleId INT NOT NULL AUTO_INCREMENT,
+CREATE TABLE Grows (
+    GrowId INT PRIMARY KEY AUTO_INCREMENT,
+    FarmerId INT,
+    CropId INT,
+    FOREIGN KEY (FarmerId) REFERENCES FarmerProfile(FarmerId),
+    FOREIGN KEY (CropId) REFERENCES CropInfo(CropId)
+);
+
+CREATE TABLE Sales (
+    SaleId INT PRIMARY KEY AUTO_INCREMENT,
     DateOfSale DATE,
-    PricePerUnit DECIMAL(10,2),
-    QuantitySold DECIMAL(10,2),
-    Earnings DECIMAL(10,2),
+    PricePerUnit DECIMAL(10, 2),
+    QuantitySold DECIMAL(10, 2),
+    Earnings DECIMAL(10, 2),
     CropId INT,
     FarmerId INT,
-    PRIMARY KEY (SaleId),
-    FOREIGN KEY (CropId) REFERENCES cropinfo(CropId),
-    FOREIGN KEY (FarmerId) REFERENCES farmerprofile(FarmerId)
+    FOREIGN KEY (CropId) REFERENCES CropInfo(CropId) ON DELETE CASCADE,
+    FOREIGN KEY (FarmerId) REFERENCES FarmerProfile(FarmerId)
 );
 
--- Create grows table
-CREATE TABLE grows (
-    FarmerId INT NOT NULL,
-    CropId INT NOT NULL,
-    PRIMARY KEY (FarmerId, CropId),
-    FOREIGN KEY (FarmerId) REFERENCES farmerprofile(FarmerId),
-    FOREIGN KEY (CropId) REFERENCES cropinfo(CropId)
+CREATE TABLE FertilizerPesticide (
+    ProductId INT PRIMARY KEY AUTO_INCREMENT,
+    ProductName VARCHAR(255),
+    Type VARCHAR(50),
+    QuantityUsed DECIMAL(10, 2),
+    Cost DECIMAL(10, 2)
 );
 
--- Create managecrop table
-CREATE TABLE managecrop (
-    CropId INT NOT NULL,
-    ProductId INT NOT NULL,
-    PRIMARY KEY (CropId, ProductId),
-    FOREIGN KEY (CropId) REFERENCES cropinfo(CropId),
-    FOREIGN KEY (ProductId) REFERENCES fertilizerpesticide(ProductId)
+CREATE TABLE ManageCrop (
+    ManageCropId INT PRIMARY KEY AUTO_INCREMENT,
+    CropId INT,
+    ProductId INT,
+    FOREIGN KEY (CropId) REFERENCES CropInfo(CropId) ON DELETE CASCADE,
+    FOREIGN KEY (ProductId) REFERENCES FertilizerPesticide(ProductId) ON DELETE CASCADE
 );
 
--- Create fertilizerpesticide table
