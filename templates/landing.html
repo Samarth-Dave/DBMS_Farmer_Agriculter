@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgroHub - Empowering Farmers with Technology</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='landing-style.css') }}">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">AgroHub</div>
+        <div class="navbar-links">
+            <a href="{{ url_for('register') }}" class="nav-button">Register</a>
+            <a href="{{ url_for('login') }}" class="nav-button">Login</a>
+        </div>
+    </nav>
+
+    <!-- Landing Section -->
+    <header class="landing-section">
+        <h1>Welcome to AgroHub</h1>
+        <p>Your trusted platform for farm management, data tracking, and agricultural insights.</p>
+    </header>
+
+    <!-- Description Section -->
+    <section class="description-section">
+        <h2>About AgroHub</h2>
+        <p>AgroHub is a comprehensive digital solution for farmers, offering powerful tools to manage their farm activities, optimize crop yield, and keep track of sales and resources. Our platform empowers farmers to make data-driven decisions, automate workflows, and achieve greater productivity with ease.</p>
+    </section>
+
+    <!-- Key Features -->
+    <section class="features-section">
+        <h2>Key Features</h2>
+        <div class="features">
+            <!-- Feature 1 -->
+            <div class="feature">
+                <h3>Comprehensive Crop Management</h3>
+                <p>Track crop cycles, planting dates, and harvest yields. Monitor each crop’s growth to optimize production and reduce waste.</p>
+            </div>
+            <!-- Feature 2 -->
+            <div class="feature">
+                <h3>Efficient Sales Tracking</h3>
+                <p>Record your sales data with ease, keep track of total earnings, and access detailed analytics to improve profitability.</p>
+            </div>
+            <!-- Feature 3 -->
+            <div class="feature">
+                <h3>Resource Allocation</h3>
+                <p>Manage fertilizers and pesticides, assign them to specific crops, and monitor usage for cost-effective farming.</p>
+            </div>
+            <!-- Feature 4 -->
+            <div class="feature">
+                <h3>Interactive Dashboard</h3>
+                <p>Get an overview of all your farming activities in one place. Access reports, charts, and forecasts at a glance.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© {{ datetime.utcnow().year }} AgroHub. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>

@@ -15,6 +15,12 @@ db.init_app(app)
 def create_tables():
     db.create_all()
 
+
+@app.route('/')
+def landing():
+    return render_template('landing.html',datetime=datetime)
+
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegisterForm()
